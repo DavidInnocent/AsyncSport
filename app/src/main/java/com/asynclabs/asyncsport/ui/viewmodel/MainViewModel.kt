@@ -1,6 +1,5 @@
-package com.asynclabs.asyncsport.ui.home
+package com.asynclabs.asyncsport.ui.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.asynclabs.asyncsport.api.FeedResponse
@@ -9,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeViewModel constructor(private val repository: MainRepository)  : ViewModel() {
+class MainViewModel constructor(private val repository: MainRepository)  : ViewModel() {
 
     val feedList = MutableLiveData<List<FeedResponse>>()
     val errorMessage = MutableLiveData<String>()
