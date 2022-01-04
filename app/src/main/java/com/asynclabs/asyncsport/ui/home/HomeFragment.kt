@@ -5,20 +5,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.adapters.VideoViewBindingAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.asynclabs.asyncsport.api.repository.MainRepository
 import com.asynclabs.asyncsport.api.retrofit.RetrofitService
 import com.asynclabs.asyncsport.databinding.FragmentHomeBinding
+import com.asynclabs.asyncsport.ui.athletes.adapter.AthleteProfilePagerAdapter
 import com.asynclabs.asyncsport.ui.home.factory.HomeViewModelFactory
+import com.asynclabs.asyncsport.ui.home.util.adapter.FeedViewPagerAdapter
+import com.google.android.exoplayer2.SimpleExoPlayer
 
 class HomeFragment : Fragment() {
 
+    private lateinit var feedAdapter: FeedViewPagerAdapter
     private val TAG = "HomeFragment"
+
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
+
+
+
 
     private val retrofitService = RetrofitService.getInstance()
 
@@ -32,16 +41,19 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         homeViewModel =
-            ViewModelProvider(this, HomeViewModelFactory(MainRepository(retrofitService))).get(
+            ViewModelProvider(requireActivity(), HomeViewModelFactory(MainRepository(retrofitService))).get(
                 HomeViewModel::class.java
             )
 
+        feedAdapter= FeedViewPagerAdapter()
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        homeViewModel.feedList.observe(viewLifecycleOwner, Observer {
+        homeViewModel.feedList.observe(viewLifecycleOwner, {
             Log.d(TAG, "onCreateView: $it")
+            feedAdapter.submitList(it)
+
         })
-        homeViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
+        homeViewModel.errorMessage.observe(viewLifecycleOwner, {
             Log.d(TAG, "onViewCreated: $it")
         })
 
@@ -50,11 +62,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel.getAllFeeds(10,"football");
+        homeViewModel.getAllFeeds(1,"football")
+        binding.feedsViewPager.adapter=feedAdapter
+        binding.feedsViewPager.orientation=ViewPager2.ORIENTATION_VERTICAL
+
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }

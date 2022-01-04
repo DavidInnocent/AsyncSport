@@ -144,7 +144,7 @@ data class Video (
 
     @SerializedName("url")
     @Expose
-    var url: String? = null,
+    var url: String,
 
     @SerializedName("poster")
     @Expose
