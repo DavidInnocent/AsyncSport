@@ -1,4 +1,4 @@
-package com.asynclabs .asyncsport.ui.home.util.adapter
+package com.asynclabs.asyncsport.ui.home.adapter
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.asynclabs.asyncsport.api.FeedResponse
 import com.asynclabs.asyncsport.databinding.VideoFeedItemBinding
+import javax.inject.Inject
 
-import com.potyvideo.library.AndExoPlayerView
 
-
-class FeedViewPagerAdapter :
+class FeedViewPagerAdapter @Inject constructor() :
     ListAdapter<FeedResponse, FeedViewPagerAdapter.ViewPagerViewHolder>(diffCallback) {
 
 

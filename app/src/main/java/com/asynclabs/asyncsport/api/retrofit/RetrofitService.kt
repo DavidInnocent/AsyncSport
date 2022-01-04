@@ -18,22 +18,4 @@ interface RetrofitService {
     @GET("athlete")
     fun getAthletes() : Call<List<AthleteResponse>>
 
-
-    companion object {
-
-        var retrofitService: RetrofitService? = null
-
-        fun getInstance() : RetrofitService {
-
-            if (retrofitService == null) {
-                val retrofit = Retrofit.Builder()
-                    .baseUrl("https://private-f5748d-technicaltaskapi.apiary-mock.com/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                retrofitService = retrofit.create(RetrofitService::class.java)
-            }
-            return retrofitService!!
-        }
-    }
-
 }

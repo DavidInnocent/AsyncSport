@@ -5,31 +5,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.adapters.VideoViewBindingAdapter
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.widget.ViewPager2
-import com.asynclabs.asyncsport.api.repository.MainRepository
-import com.asynclabs.asyncsport.api.retrofit.RetrofitService
-import com.asynclabs.asyncsport.databinding.FragmentHomeBinding
-import com.asynclabs.asyncsport.ui.athletes.adapter.AthleteProfilePagerAdapter
-import com.asynclabs.asyncsport.ui.home.factory.HomeViewModelFactory
-import com.asynclabs.asyncsport.ui.home.util.adapter.FeedViewPagerAdapter
-import com.google.android.exoplayer2.SimpleExoPlayer
 
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.viewpager2.widget.ViewPager2
+import com.asynclabs.asyncsport.databinding.FragmentHomeBinding
+import com.asynclabs.asyncsport.ui.home.adapter.FeedViewPagerAdapter
+
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private lateinit var feedAdapter: FeedViewPagerAdapter
+
+    @Inject
+    lateinit var feedAdapter: FeedViewPagerAdapter
     private val TAG = "HomeFragment"
 
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by viewModels()
     private var _binding: FragmentHomeBinding? = null
 
-
-
-
-    private val retrofitService = RetrofitService.getInstance()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -40,12 +37,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(requireActivity(), HomeViewModelFactory(MainRepository(retrofitService))).get(
-                HomeViewModel::class.java
-            )
 
-        feedAdapter= FeedViewPagerAdapter()
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         homeViewModel.feedList.observe(viewLifecycleOwner, {

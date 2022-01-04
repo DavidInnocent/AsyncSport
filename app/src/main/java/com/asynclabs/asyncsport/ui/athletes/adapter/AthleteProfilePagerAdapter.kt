@@ -1,20 +1,19 @@
 package com.asynclabs.asyncsport.ui.athletes.adapter
 
-import android.net.Uri
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.MediaController
+
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.asynclabs.asyncsport.api.FeedResponse
+
 import com.asynclabs.asyncsport.api.model.AthleteResponse
 import com.asynclabs.asyncsport.databinding.AthleteFeedItemBinding
-import com.asynclabs.asyncsport.databinding.VideoFeedItemBinding
-import com.potyvideo.library.AndExoPlayerView
+import javax.inject.Inject
 
 
-class AthleteProfilePagerAdapter :
+class AthleteProfilePagerAdapter @Inject constructor() :
     ListAdapter<AthleteResponse, AthleteProfilePagerAdapter.ViewPagerViewHolder>(diffCallback) {
 
 

@@ -6,28 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
-import com.asynclabs.asyncsport.api.repository.MainRepository
-import com.asynclabs.asyncsport.api.retrofit.RetrofitService
 import com.asynclabs.asyncsport.databinding.FragmentAthletesBinding
 import com.asynclabs.asyncsport.ui.athletes.adapter.AthleteProfilePagerAdapter
-import com.asynclabs.asyncsport.ui.athletes.factory.AthletesViewModelFactory
-import com.asynclabs.asyncsport.ui.home.HomeViewModel
-import com.asynclabs.asyncsport.ui.home.factory.HomeViewModelFactory
-import com.asynclabs.asyncsport.ui.home.util.adapter.FeedViewPagerAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class AthletesFragment : Fragment() {
 
-    private lateinit var athletesAdapter: AthleteProfilePagerAdapter
+    @Inject
+    lateinit var athletesAdapter: AthleteProfilePagerAdapter
     private val TAG = "AthletesFragment"
 
-    private lateinit var athletesViewModel: AthletesViewModel
+    val athletesViewModel: AthletesViewModel by viewModels()
     private var _binding: FragmentAthletesBinding? = null
 
-    private val retrofitService = RetrofitService.getInstance()
+
 
 
     // This property is only valid between onCreateView and
@@ -40,12 +37,6 @@ class AthletesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        athletesAdapter= AthleteProfilePagerAdapter()
-
-        athletesViewModel =
-            ViewModelProvider(this, AthletesViewModelFactory(MainRepository(retrofitService))).get(
-                AthletesViewModel::class.java
-            )
         _binding = FragmentAthletesBinding.inflate(inflater, container, false)
 
         athletesViewModel.athleteList.observe(viewLifecycleOwner, {

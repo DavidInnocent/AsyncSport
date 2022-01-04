@@ -37,13 +37,6 @@
         android:scaleType="center"
         android:id="@+id/media_container">
 
-        <ImageView
-            android:id="@+id/thumbnail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#fff"
-            android:scaleType="centerInside"
-            android:src="@drawable/exo_notification_fastforward" />
 
         <ImageView
             android:layout_width="25dp"

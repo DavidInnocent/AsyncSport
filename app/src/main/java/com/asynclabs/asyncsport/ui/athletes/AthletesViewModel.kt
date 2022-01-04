@@ -1,17 +1,18 @@
 package com.asynclabs.asyncsport.ui.athletes
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.asynclabs.asyncsport.api.Athlete
 import com.asynclabs.asyncsport.api.model.AthleteResponse
 
-import com.asynclabs.asyncsport.api.repository.MainRepository
+import com.asynclabs.asyncsport.repository.MainRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class AthletesViewModel constructor(private val repository: MainRepository)  : ViewModel() {
+@HiltViewModel
+class AthletesViewModel @Inject constructor(private val repository: MainRepository)  : ViewModel() {
 
     val athleteList = MutableLiveData<List<AthleteResponse>>()
     val errorMessage = MutableLiveData<String>()
