@@ -6,6 +6,7 @@ import com.asynclabs.asyncsport.api.model.AthleteResponse
 
 
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -13,9 +14,9 @@ import retrofit2.http.Query
 
 interface RetrofitService {
     @GET("feed")
-    fun getFeeds(@Query("page") page:Int, @Query("sport")sport:String) : Call<List<FeedResponse>>
+    suspend fun getFeeds(@Query("page") page:Int, @Query("sport")sport:String) : Response<List<FeedResponse>>
 
     @GET("athlete")
-    fun getAthletes() : Call<List<AthleteResponse>>
+    suspend fun getAthletes() : Response<List<AthleteResponse>>
 
 }

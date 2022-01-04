@@ -27,7 +27,8 @@ class FeedViewPagerAdapter @Inject constructor() :
 
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
 
-        holder.bind(currentList[position])
+        val mediaController=MediaController(holder.itemView.context)
+        holder.bind(currentList[position],mediaController)
     }
 
     override fun getItemCount(): Int = currentList.size
@@ -35,11 +36,10 @@ class FeedViewPagerAdapter @Inject constructor() :
 
     inner class ViewPagerViewHolder(private val binding: VideoFeedItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(feedResponse: FeedResponse){
+        fun bind(feedResponse: FeedResponse, mediaController: MediaController){
             binding.apply {
                 this.textView.text=feedResponse.athlete?.name ?: ""
                 this.feedVideo.setVideoURI(Uri.parse(feedResponse.video?.url))
-                val mediaController=MediaController(binding.root.context);
                 this.feedVideo.setMediaController(mediaController)
                 mediaController.setAnchorView(feedVideo)
                 feedVideo.start()

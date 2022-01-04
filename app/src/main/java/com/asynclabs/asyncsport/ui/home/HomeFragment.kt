@@ -8,11 +8,13 @@ import android.view.ViewGroup
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.asynclabs.asyncsport.databinding.FragmentHomeBinding
 import com.asynclabs.asyncsport.ui.home.adapter.FeedViewPagerAdapter
 
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,6 +42,9 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        binding.feedsViewPager.adapter = feedAdapter
+        binding.feedsViewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+
         homeViewModel.feedList.observe(viewLifecycleOwner, {
             Log.d(TAG, "onCreateView: $it")
             feedAdapter.submitList(it)
@@ -54,11 +59,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel.getAllFeeds(1,"football")
-        binding.feedsViewPager.adapter=feedAdapter
-        binding.feedsViewPager.orientation=ViewPager2.ORIENTATION_VERTICAL
-
-
+        homeViewModel.getAllFeeds(1, "football")
 
     }
 

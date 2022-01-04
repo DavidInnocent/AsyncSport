@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import com.asynclabs.asyncsport.MainActivity
 
 import com.asynclabs.asyncsport.databinding.ActivitySplashBinding
@@ -25,7 +26,7 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()

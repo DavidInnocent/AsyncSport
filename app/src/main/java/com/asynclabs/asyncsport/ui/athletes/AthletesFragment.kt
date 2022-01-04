@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.asynclabs.asyncsport.databinding.FragmentAthletesBinding
 import com.asynclabs.asyncsport.ui.athletes.adapter.AthleteProfilePagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -25,8 +27,6 @@ class AthletesFragment : Fragment() {
     private var _binding: FragmentAthletesBinding? = null
 
 
-
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -38,6 +38,9 @@ class AthletesFragment : Fragment() {
     ): View? {
 
         _binding = FragmentAthletesBinding.inflate(inflater, container, false)
+
+        binding.athletesViewPager.adapter = athletesAdapter
+        binding.athletesViewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
 
         athletesViewModel.athleteList.observe(viewLifecycleOwner, {
             Log.d(TAG, "onCreateView: $it")
@@ -51,9 +54,11 @@ class AthletesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         athletesViewModel.getAllAthletes()
-        binding.athletesViewPager.adapter=athletesAdapter
-        binding.athletesViewPager.orientation= ViewPager2.ORIENTATION_VERTICAL
+
+
     }
 
     override fun onDestroyView() {
