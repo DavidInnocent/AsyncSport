@@ -4,13 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.asynclabs.asyncsport.data.FeedResponse
+import com.asynclabs.asyncsport.data.repository.AthletesRepository
+import com.asynclabs.asyncsport.data.repository.FeedsRepository
 import com.asynclabs.asyncsport.data.repository.impl.AthletesRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repository: AthletesRepositoryImpl)  : ViewModel() {
+class HomeViewModel @Inject constructor(private val repository: FeedsRepository)  : ViewModel() {
 
     val feedList = MutableLiveData<List<FeedResponse>>()
     val errorMessage = MutableLiveData<String>()
@@ -18,8 +20,8 @@ class HomeViewModel @Inject constructor(private val repository: AthletesReposito
     fun getAllFeeds(page:Int, sport:String) {
 
         viewModelScope.launch {
-            val response = repository.getAllFeeds(page, sport)
-              feedList.postValue(response.body())
+            val feedsResult = repository.getAllFeeds(page, sport)
+              feedList.postValue(feedsResult)
 
         }
 
