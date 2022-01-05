@@ -1,4 +1,4 @@
-package com.asynclabs.asyncsport.api
+package com.asynclabs.asyncsport.data
 
 
 import com.google.gson.annotations.SerializedName

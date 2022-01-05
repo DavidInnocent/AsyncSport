@@ -1,7 +1,7 @@
 package com.asynclabs.asyncsport.di
 
-import com.asynclabs.asyncsport.repository.MainRepository
-import com.asynclabs.asyncsport.api.retrofit.RetrofitService
+import com.asynclabs.asyncsport.data.repository.MainRepository
+import com.asynclabs.asyncsport.data.remote.AsyncLabAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,10 +42,10 @@ object ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): RetrofitService =
-        retrofit.create(RetrofitService::class.java)
+    fun provideApiService(retrofit: Retrofit): AsyncLabAPI =
+        retrofit.create(AsyncLabAPI::class.java)
 
     @Singleton
     @Provides
-    fun providesRepository(apiService: RetrofitService) = MainRepository(apiService)
+    fun providesRepository(apiService: AsyncLabAPI) = MainRepository(apiService)
 }

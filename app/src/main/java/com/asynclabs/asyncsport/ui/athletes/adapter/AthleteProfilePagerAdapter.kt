@@ -1,7 +1,6 @@
 package com.asynclabs.asyncsport.ui.athletes.adapter
 
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.bumptech.glide.Glide
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.asynclabs.asyncsport.R
 
-import com.asynclabs.asyncsport.api.model.AthleteResponse
+import com.asynclabs.asyncsport.data.model.AthleteResponse
 import com.asynclabs.asyncsport.databinding.AthleteFeedItemBinding
 import javax.inject.Inject
 

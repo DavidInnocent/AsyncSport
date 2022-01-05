@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.asynclabs.asyncsport.R
-import com.asynclabs.asyncsport.api.FeedResponse
+import com.asynclabs.asyncsport.data.FeedResponse
 import com.asynclabs.asyncsport.databinding.VideoFeedItemBinding
 import com.bumptech.glide.Glide
 import javax.inject.Inject
