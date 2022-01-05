@@ -21,8 +21,10 @@ class HomeViewModel @Inject constructor(private val repository: FeedsRepository)
 
         viewModelScope.launch {
             val feedsResult = repository.getAllFeeds(page, sport)
-              feedList.postValue(feedsResult)
-
+            when(feedsResult.isEmpty()){
+                true -> errorMessage.postValue("An error has occurred")
+                false -> feedList.postValue(feedsResult)
+            }
         }
 
     }

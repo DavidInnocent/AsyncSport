@@ -19,8 +19,7 @@ import javax.inject.Inject
 import com.labo.kaji.fragmentanimations.MoveAnimation
 
 import android.view.animation.Animation
-
-
+import com.google.android.material.snackbar.Snackbar
 
 
 @AndroidEntryPoint
@@ -57,6 +56,7 @@ class HomeFragment : Fragment() {
 
         })
         homeViewModel.errorMessage.observe(viewLifecycleOwner, {
+            Snackbar.make(requireView(),it, Snackbar.LENGTH_LONG).show()
             Log.d(TAG, "onViewCreated: $it")
         })
 

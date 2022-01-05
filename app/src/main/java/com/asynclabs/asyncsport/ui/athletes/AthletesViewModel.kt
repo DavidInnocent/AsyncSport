@@ -21,7 +21,11 @@ class AthletesViewModel @Inject constructor(private val repository: AthletesRepo
 
         viewModelScope.launch {
             val athletesResult = repository.getAthletes()
-            athleteList.postValue(athletesResult)
+            when(athletesResult.isEmpty()){
+                true -> errorMessage.postValue("An error has occurred")
+                false -> athleteList.postValue(athletesResult)
+            }
+            
 
         }
 

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.asynclabs.asyncsport.databinding.FragmentAthletesBinding
 import com.asynclabs.asyncsport.ui.athletes.adapter.AthleteProfilePagerAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.labo.kaji.fragmentanimations.MoveAnimation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -49,6 +50,7 @@ class AthletesFragment : Fragment() {
             athletesAdapter.submitList(it)
         })
         athletesViewModel.errorMessage.observe(viewLifecycleOwner, {
+            Snackbar.make(requireView(),it,Snackbar.LENGTH_LONG).show()
             Log.d(TAG, "onViewCreated: $it")
         })
         return binding.root
