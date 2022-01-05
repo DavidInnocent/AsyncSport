@@ -5,12 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.asynclabs.asyncsport.databinding.FragmentAthletesBinding
 import com.asynclabs.asyncsport.ui.athletes.adapter.AthleteProfilePagerAdapter
+import com.labo.kaji.fragmentanimations.MoveAnimation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -64,5 +66,16 @@ class AthletesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            MoveAnimation.create(MoveAnimation.RIGHT, enter, 700)
+        } else {
+            //            return CubeAnimation.create(CubeAnimation.UP, enter, 500);
+            MoveAnimation.create(MoveAnimation.DOWN, enter, 700)
+        }
     }
 }

@@ -16,6 +16,12 @@ import com.asynclabs.asyncsport.ui.home.adapter.FeedViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.labo.kaji.fragmentanimations.MoveAnimation
+
+import android.view.animation.Animation
+
+
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -66,6 +72,16 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            MoveAnimation.create(MoveAnimation.LEFT, enter, 700)
+        } else {
+            //            return CubeAnimation.create(CubeAnimation.UP, enter, 500);
+            MoveAnimation.create(MoveAnimation.DOWN, enter, 700)
+        }
     }
 
 }
