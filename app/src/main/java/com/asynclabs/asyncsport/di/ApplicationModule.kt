@@ -1,6 +1,6 @@
 package com.asynclabs.asyncsport.di
 
-import com.asynclabs.asyncsport.data.repository.MainRepository
+import com.asynclabs.asyncsport.data.repository.impl.AthletesRepositoryImpl
 import com.asynclabs.asyncsport.data.remote.AsyncLabAPI
 import dagger.Module
 import dagger.Provides
@@ -47,5 +47,5 @@ object ApplicationModule {
 
     @Singleton
     @Provides
-    fun providesRepository(apiService: AsyncLabAPI) = MainRepository(apiService)
+    fun providesRepository(apiService: AsyncLabAPI) = AthletesRepositoryImpl(apiService)
 }
