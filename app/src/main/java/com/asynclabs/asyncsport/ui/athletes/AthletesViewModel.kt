@@ -1,32 +1,33 @@
 package com.asynclabs.asyncsport.ui.athletes
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.asynclabs.asyncsport.api.Athlete
-import com.asynclabs.asyncsport.api.model.AthleteResponse
+import androidx.lifecycle.viewModelScope
+import com.asynclabs.asyncsport.data.model.AthleteResponse
+import com.asynclabs.asyncsport.data.repository.AthletesRepository
 
-import com.asynclabs.asyncsport.api.repository.MainRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.asynclabs.asyncsport.data.repository.impl.AthletesRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AthletesViewModel constructor(private val repository: MainRepository)  : ViewModel() {
+@HiltViewModel
+class AthletesViewModel @Inject constructor(private val repository: AthletesRepository) : ViewModel() {
 
     val athleteList = MutableLiveData<List<AthleteResponse>>()
     val errorMessage = MutableLiveData<String>()
 
     fun getAllAthletes() {
 
-        val response = repository.getAthletes()
-        response.enqueue(object : Callback<List<AthleteResponse>> {
-            override fun onResponse(call: Call<List<AthleteResponse>>, response: Response<List<AthleteResponse>>) {
-                athleteList.postValue(response.body())
+        viewModelScope.launch {
+            val athletesResult = repository.getAthletes()
+            when(athletesResult.isEmpty()){
+                true -> errorMessage.postValue("An error has occurred")
+                false -> athleteList.postValue(athletesResult)
             }
+            
 
-            override fun onFailure(call: Call<List<AthleteResponse>>, t: Throwable) {
-                errorMessage.postValue(t.message)
-            }
-        })
+        }
+
     }
 }

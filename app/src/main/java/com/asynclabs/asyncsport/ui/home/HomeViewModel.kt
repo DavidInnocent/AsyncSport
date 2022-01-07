@@ -1,30 +1,31 @@
 package com.asynclabs.asyncsport.ui.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.asynclabs.asyncsport.api.FeedResponse
-import com.asynclabs.asyncsport.api.repository.MainRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.lifecycle.viewModelScope
+import com.asynclabs.asyncsport.data.FeedResponse
+import com.asynclabs.asyncsport.data.repository.AthletesRepository
+import com.asynclabs.asyncsport.data.repository.FeedsRepository
+import com.asynclabs.asyncsport.data.repository.impl.AthletesRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel constructor(private val repository: MainRepository)  : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val repository: FeedsRepository)  : ViewModel() {
 
     val feedList = MutableLiveData<List<FeedResponse>>()
     val errorMessage = MutableLiveData<String>()
 
-    fun getAllFeeds(page:Int,sport:String) {
+    fun getAllFeeds(page:Int, sport:String) {
 
-        val response = repository.getAllMovies(page, sport)
-        response.enqueue(object : Callback<List<FeedResponse>> {
-            override fun onResponse(call: Call<List<FeedResponse>>, response: Response<List<FeedResponse>>) {
-                feedList.postValue(response.body())
+        viewModelScope.launch {
+            val feedsResult = repository.getAllFeeds(page, sport)
+            when(feedsResult.isEmpty()){
+                true -> errorMessage.postValue("An error has occurred")
+                false -> feedList.postValue(feedsResult)
             }
+        }
 
-            override fun onFailure(call: Call<List<FeedResponse>>, t: Throwable) {
-                errorMessage.postValue(t.message)
-            }
-        })
     }
 }

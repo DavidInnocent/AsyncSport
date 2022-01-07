@@ -5,25 +5,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.asynclabs.asyncsport.api.repository.MainRepository
-import com.asynclabs.asyncsport.api.retrofit.RetrofitService
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import com.asynclabs.asyncsport.databinding.FragmentAthletesBinding
-import com.asynclabs.asyncsport.ui.athletes.factory.AthletesViewModelFactory
-import com.asynclabs.asyncsport.ui.home.HomeViewModel
-import com.asynclabs.asyncsport.ui.home.factory.HomeViewModelFactory
+import com.asynclabs.asyncsport.ui.athletes.adapter.AthleteProfilePagerAdapter
+import com.google.android.material.snackbar.Snackbar
+import com.labo.kaji.fragmentanimations.MoveAnimation
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class AthletesFragment : Fragment() {
 
+    @Inject
+    lateinit var athletesAdapter: AthleteProfilePagerAdapter
     private val TAG = "AthletesFragment"
 
-    private lateinit var athletesViewModel: AthletesViewModel
+    val athletesViewModel: AthletesViewModel by viewModels()
     private var _binding: FragmentAthletesBinding? = null
-
-    private val retrofitService = RetrofitService.getInstance()
 
 
     // This property is only valid between onCreateView and
@@ -35,16 +39,18 @@ class AthletesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        athletesViewModel =
-            ViewModelProvider(this, AthletesViewModelFactory(MainRepository(retrofitService))).get(
-                AthletesViewModel::class.java
-            )
+
         _binding = FragmentAthletesBinding.inflate(inflater, container, false)
 
-        athletesViewModel.athleteList.observe(viewLifecycleOwner, Observer {
+        binding.athletesViewPager.adapter = athletesAdapter
+        binding.athletesViewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+
+        athletesViewModel.athleteList.observe(viewLifecycleOwner, {
             Log.d(TAG, "onCreateView: $it")
+            athletesAdapter.submitList(it)
         })
-        athletesViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
+        athletesViewModel.errorMessage.observe(viewLifecycleOwner, {
+            Snackbar.make(requireView(),it,Snackbar.LENGTH_LONG).show()
             Log.d(TAG, "onViewCreated: $it")
         })
         return binding.root
@@ -52,11 +58,26 @@ class AthletesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         athletesViewModel.getAllAthletes()
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            MoveAnimation.create(MoveAnimation.RIGHT, enter, 700)
+        } else {
+            //            return CubeAnimation.create(CubeAnimation.UP, enter, 500);
+            MoveAnimation.create(MoveAnimation.DOWN, enter, 700)
+        }
     }
 }
