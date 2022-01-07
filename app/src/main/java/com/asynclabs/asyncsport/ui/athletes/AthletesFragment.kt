@@ -1,20 +1,34 @@
 package com.asynclabs.asyncsport.ui.athletes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.view.animation.Animation
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import com.asynclabs.asyncsport.databinding.FragmentAthletesBinding
+import com.asynclabs.asyncsport.ui.athletes.adapter.AthleteProfilePagerAdapter
+import com.google.android.material.snackbar.Snackbar
+import com.labo.kaji.fragmentanimations.MoveAnimation
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class AthletesFragment : Fragment() {
 
-    private lateinit var athletesViewModel: AthletesViewModel
+    @Inject
+    lateinit var athletesAdapter: AthleteProfilePagerAdapter
+    private val TAG = "AthletesFragment"
+
+    val athletesViewModel: AthletesViewModel by viewModels()
     private var _binding: FragmentAthletesBinding? = null
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,21 +39,45 @@ class AthletesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        athletesViewModel =
-            ViewModelProvider(this).get(AthletesViewModel::class.java)
 
         _binding = FragmentAthletesBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        athletesViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        binding.athletesViewPager.adapter = athletesAdapter
+        binding.athletesViewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+
+        athletesViewModel.athleteList.observe(viewLifecycleOwner, {
+            Log.d(TAG, "onCreateView: $it")
+            athletesAdapter.submitList(it)
         })
-        return root
+        athletesViewModel.errorMessage.observe(viewLifecycleOwner, {
+            Snackbar.make(requireView(),it,Snackbar.LENGTH_LONG).show()
+            Log.d(TAG, "onViewCreated: $it")
+        })
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        athletesViewModel.getAllAthletes()
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            MoveAnimation.create(MoveAnimation.RIGHT, enter, 700)
+        } else {
+            //            return CubeAnimation.create(CubeAnimation.UP, enter, 500);
+            MoveAnimation.create(MoveAnimation.DOWN, enter, 700)
+        }
     }
 }
