@@ -38,21 +38,21 @@ class AthletesFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentAthletesBinding.inflate(inflater, container, false)
 
         binding.athletesViewPager.adapter = athletesAdapter
         binding.athletesViewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
 
-        athletesViewModel.athleteList.observe(viewLifecycleOwner, {
+        athletesViewModel.athleteList.observe(viewLifecycleOwner) {
             Log.d(TAG, "onCreateView: $it")
             athletesAdapter.submitList(it)
-        })
-        athletesViewModel.errorMessage.observe(viewLifecycleOwner, {
-            Snackbar.make(requireView(),it,Snackbar.LENGTH_LONG).show()
+        }
+        athletesViewModel.errorMessage.observe(viewLifecycleOwner) {
+            Snackbar.make(requireView(), it, Snackbar.LENGTH_LONG).show()
             Log.d(TAG, "onViewCreated: $it")
-        })
+        }
         return binding.root
     }
 
