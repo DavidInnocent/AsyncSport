@@ -126,7 +126,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/mpesa"
-            android:background="@drawable/circle"/>
+            android:background="@drawable/circle"/>origin/develo
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
