@@ -15,7 +15,8 @@
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-black"
         android:text="Athletes"
-        android:textColor="@color/light_blue_600"
+        android:textColor="#FFC0CB"
+
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
