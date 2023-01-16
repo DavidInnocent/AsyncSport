@@ -16,5 +16,16 @@
         android:name="com.asynclabs.asyncsport.ui.athletes.AthletesFragment"
         android:label="@string/title_athletes"
         tools:layout="@layout/fragment_athletes" />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.asynclabs.asyncsport.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" />
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.asynclabs.asyncsport.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment" />
+
 
 </navigation>
